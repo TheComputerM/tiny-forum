@@ -32,21 +32,29 @@ The mini-world of this project contains and represents the actions needed for a 
 - *tags*: A set of tags specifying what the user has expertise in
 - *created_at*: When the user signed up
 
+> *tags* can be edited by the user or any other user who is a moderator
+
 #### Post
 
 - *id*: Unique identifier
 - *user_id*: The user who make the post
+  - Many-to-one (Many posts have one user)
 - *title*: The title of the question/post
 - *content*: Content with more information on the question in markdown
 - *tags*: A set of tags which describe the topics related to the post
 - *duplicate*: If not null, points to the post id whose duplicate it is
+  - can only be updated my a user who is a moderator
 - *created_at*: When the post was created
+
+> Can be deleted by a user who is a moderator
 
 #### Tag
 
 - *id*: Unique identifier
 - *name*: Short name of the topic (eg. DBMS)
 - *description*: Description of the topic the tag relates to (eg. Manage and organize databases)
+
+> Tags can be created and deleted by users who are moderators
 
 ####  Reply
 
@@ -55,3 +63,5 @@ The mini-world of this project contains and represents the actions needed for a 
 - *user_id*: The user who made the reply
 - *content*: Content with the reply in markdown
 - *created_at*: When the reply was made
+
+> Can be deleted by a user who is a moderator
