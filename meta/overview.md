@@ -118,8 +118,16 @@ The mini-world of this project contains and represents the actions needed for a 
 
 
 ## Relational Mapping
-
-
+- **Post_Has_Tag** is between a *Post* and *Tag*. A *Post* can have multiple *Tags* and *Tags* can have multiple *Posts* related to it. 
+- **User_Has_Tag** is between a *User* and *Tag*. A *User* can have multiple *Tags* and *Tags* can have multiple *Users* who are an expert in the *Tag's* domain. 
+- **User_Creates_Or_Deletes_Post** is between a *User* and *Post*. A *User* can create or delete multiple *Posts*.
+- **User_Has_Interaction** 
+- **Comment_Has_Interaction** 
+- **User_Creates_Or_Deletes_Comment** 
+- **Admin_Manages_Post** is between *User* who is an Admin and *Post*.An admin can delete a *Post*, mark it as spam or add *Tags* to it.
+- **Admin_Manages_Comment** is between *User* who is an Admin and *Comment*.An admin can delete a *Comment*.
+- **Admin_Manages_User** is between *User* who is an Admin and another *User*.An admin can delete a *User* and make another *User* an admin.
+- **Comment_Has_Interaction** is between *Comment* and *Interaction*. A *Comment* can have
 
 
 
