@@ -62,3 +62,18 @@ CREATE TABLE IF NOT EXISTS "sentiment" (
   FOREIGN KEY ("user_id") REFERENCES "users"("id"),
   FOREIGN KEY ("comment_id") REFERENCES "comment"("id")
 );
+
+CREATE FUNCTION welcome_post()
+RETURN TRIGGER AS $$
+BEGIN
+	INSERT INTO post (user_id,title,content)
+	VALUES(NEW.id,'Welcome User','Welcome to our platform, '||NEW.name||'!');
+
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql
+
+CREATE TRIGGER welcome_post_trigger
+AFTER INSERT ON users
+FOR EACH ROW
+EXECUTE FUNCTION welcome_post();
