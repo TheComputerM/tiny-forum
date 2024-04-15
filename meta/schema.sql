@@ -62,3 +62,27 @@ CREATE TABLE IF NOT EXISTS "sentiment" (
   FOREIGN KEY ("user_id") REFERENCES "users"("id"),
   FOREIGN KEY ("comment_id") REFERENCES "comment"("id")
 );
+
+
+INSERT INTO tag (name,description)
+VALUES ('newbie','newbie_tag');
+
+
+
+--triggers
+CREATE FUNCTION assign_newbie_tag()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.role != 'moderator' THEN
+        INSERT INTO user_tags (user_id, tag_id)
+        VALUES (NEW.id, (SELECT tag_id from tags WHERE tag_name = 'newbie'));
+
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER newbie_tag_trigger
+AFTER INSERT ON users
+FOR EACH ROW
+EXECUTE FUNCTION assign_newbie_tag();
