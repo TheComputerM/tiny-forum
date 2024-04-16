@@ -77,3 +77,17 @@ CREATE TRIGGER welcome_post_trigger
 AFTER INSERT ON users
 FOR EACH ROW
 EXECUTE FUNCTION welcome_post();
+
+CREATE FUNCTION self_like()
+RETURN TRIGGER AS $$
+BEGIN
+    INSERT INTO sentiment (user_id,comment_id,score)
+    VALUES (NEW.user_id,NEW.id,1);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER self_like_trigger
+AFTER INSERT ON comment
+FOR EACH ROW
+EXECUTE FUNCTION self_like();
