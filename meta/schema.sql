@@ -84,7 +84,7 @@ BEGIN
 	SELECT systimestamp INTO current_timestamp FROM dual;
 	OPEN result FOR
 		SELECT id FROM post WHERE id IN (
-			SELECT post_id FROM comment WHERE created_at >= current_timestamp
+			SELECT post_id FROM comment WHERE created_at >= current_timestamp - INTERVAL '24' HOUR
 		);
 	RETURN result;
 END;
