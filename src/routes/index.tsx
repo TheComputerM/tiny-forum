@@ -1,7 +1,12 @@
+import { Container, Stack } from "styled-system/jsx";
+import { PostCard } from "~/components/Post";
+
 export default function HomePage() {
   return (
-    <main>
-      <h1>Hello world!</h1>
-    </main>
+    <Container mt="6">
+      <Stack>
+        <PostCard />
+      </Stack>
+    </Container>
   );
 }

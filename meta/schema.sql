@@ -3,7 +3,7 @@
 CREATE TABLE IF NOT EXISTS "users" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" varchar(255) NOT NULL,
-	"email" varchar(100) NOT NULL,
+	"email" varchar(100) NOT NULL UNIQUE,
 	"is_moderator" boolean DEFAULT false,
 	"created_at" timestamp DEFAULT now()
 );
@@ -63,7 +63,9 @@ CREATE TABLE IF NOT EXISTS "sentiment" (
   FOREIGN KEY ("comment_id") REFERENCES "comment"("id")
 );
 
-INSERT INTO tag (name, description) VALUES ('newbie', 'A new member');
+INSERT INTO users (name, email, is_moderator) VALUES ('Admin', 'admin@tiny-forum.com', true);
+
+INSERT INTO tag (name, description) VALUES ('newbie', 'A newly joined member');
 
 CREATE FUNCTION assign_newbie_tag()
 RETURNS TRIGGER AS $$
@@ -71,7 +73,6 @@ BEGIN
     IF NEW.role != 'moderator' THEN
         INSERT INTO user_tags (user_id, tag_id)
         VALUES (NEW.id, (SELECT tag_id from tags WHERE tag_name = 'newbie'));
-
     END IF;
 END;
 $$ LANGUAGE plpgsql;
