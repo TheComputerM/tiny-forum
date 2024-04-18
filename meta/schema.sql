@@ -82,14 +82,14 @@ FOR EACH ROW
 EXECUTE FUNCTION assign_newbie_tag();
 
 CREATE FUNCTION welcome_post()
-RETURN TRIGGER AS $$
+RETURNS TRIGGER AS $$
 BEGIN
 	INSERT INTO post (user_id,title,content)
-	VALUES(NEW.id,'Welcome User','Welcome to our platform, '||NEW.name||'!');
+	VALUES (NEW.id,'Welcome User','Welcome to our platform, '||NEW.name||'!');
 
 	RETURN NEW;
 END;
-$$ LANGUAGE plpgsql
+$$ LANGUAGE plpgsql;
 
 CREATE TRIGGER welcome_post_trigger
 AFTER INSERT ON users
@@ -97,7 +97,7 @@ FOR EACH ROW
 EXECUTE FUNCTION welcome_post();
 
 CREATE FUNCTION self_like()
-RETURN TRIGGER AS $$
+RETURNS TRIGGER AS $$
 BEGIN
     INSERT INTO sentiment (user_id,comment_id,score)
     VALUES (NEW.user_id,NEW.id,1);
