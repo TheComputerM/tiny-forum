@@ -63,13 +63,8 @@ CREATE TABLE IF NOT EXISTS "sentiment" (
   FOREIGN KEY ("comment_id") REFERENCES "comment"("id")
 );
 
+INSERT INTO tag (name, description) VALUES ('newbie', 'A new member');
 
-INSERT INTO tag (name,description)
-VALUES ('newbie','newbie_tag');
-
-
-
---triggers
 CREATE FUNCTION assign_newbie_tag()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -78,7 +73,6 @@ BEGIN
         VALUES (NEW.id, (SELECT tag_id from tags WHERE tag_name = 'newbie'));
 
     END IF;
-    RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -86,3 +80,34 @@ CREATE TRIGGER newbie_tag_trigger
 AFTER INSERT ON users
 FOR EACH ROW
 EXECUTE FUNCTION assign_newbie_tag();
+
+CREATE FUNCTION welcome_post()
+RETURN TRIGGER AS $$
+BEGIN
+	INSERT INTO post (user_id,title,content)
+	VALUES(NEW.id,'Welcome User','Welcome to our platform, '||NEW.name||'!');
+
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql
+
+CREATE TRIGGER welcome_post_trigger
+AFTER INSERT ON users
+FOR EACH ROW
+EXECUTE FUNCTION welcome_post();
+
+CREATE FUNCTION self_like()
+RETURN TRIGGER AS $$
+BEGIN
+    INSERT INTO sentiment (user_id,comment_id,score)
+    VALUES (NEW.user_id,NEW.id,1);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER self_like_trigger
+AFTER INSERT ON comment
+FOR EACH ROW
+EXECUTE FUNCTION self_like();
+
