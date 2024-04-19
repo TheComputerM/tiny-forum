@@ -3,6 +3,18 @@ import { APIEvent } from "@solidjs/start/server";
 import sql from "~/lib/db";
 
 export async function GET() {
+  /**
+   * TODO(eshaan): also get the user's name in the posts
+   * ```json
+   * [{
+   *    id: <<post_id>>,
+   *    ...,
+   *    user: {
+   *      name: <<username>>
+   *    }
+   * }]
+   * ```
+   */
   const posts = await sql`select * from post`;
   return posts;
 }
