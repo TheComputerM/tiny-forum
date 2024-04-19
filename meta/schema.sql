@@ -75,18 +75,15 @@ BEGIN
 	DELETE FROM tag WHERE id=tag;
 END;
 
-CREATE OR REPLACE PROCEDURE get_recent_posts() RETURN SYS_REFCURSOR IS
+CREATE OR REPLACE PROCEDURE get_recent_posts() IS
 -- This procedure returns a cursor to a view containing recent posts
 DECLARE
-	result SYS_REFCURSOR;
 	current_timestamp TIMESTAMP;
 BEGIN
 	SELECT systimestamp INTO current_timestamp FROM dual;
-	OPEN result FOR
-		SELECT id FROM post WHERE id IN (
-			SELECT post_id FROM comment WHERE created_at >= current_timestamp - INTERVAL '24' HOUR
-		);
-	RETURN result;
+	SELECT id FROM post WHERE id IN (
+		SELECT post_id FROM comment WHERE created_at >= current_timestamp - INTERVAL '24' HOUR
+	);
 END;
 
 CREATE FUNCTION welcome_post()
