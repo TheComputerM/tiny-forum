@@ -23,6 +23,9 @@ importers:
       '@solidjs/start':
         specifier: 1.0.0-rc.0
         version: 1.0.0-rc.0(rollup@4.14.3)(solid-js@1.8.16)(vinxi@0.3.11(@types/node@20.12.7)(ioredis@5.4.1)(lightningcss@1.23.0)(terser@5.30.3))(vite@5.2.9(@types/node@20.12.7)(lightningcss@1.23.0)(terser@5.30.3))
+      postgres:
+        specifier: ^3.4.4
+        version: 3.4.4
       solid-icons:
         specifier: ^1.1.0
         version: 1.1.0(solid-js@1.8.16)
@@ -2480,6 +2483,10 @@ packages:
   postcss@8.4.38:
     resolution: {integrity: sha512-Wglpdk03BSfXkHoQa3b/oulrotAkwrlLDRSOb9D0bN86FdRyE9lppSp33aHNPgBa0JKCoB+drFLZkQoRRYae5A==}
     engines: {node: ^10 || ^12 || >=14}
+
+  postgres@3.4.4:
+    resolution: {integrity: sha512-IbyN+9KslkqcXa8AO9fxpk97PA4pzewvpi2B3Dwy9u4zpV32QicaEdgmF3eSQUzdRk7ttDHQejNgAEr4XoeH4A==}
+    engines: {node: '>=12'}
 
   preferred-pm@3.1.2:
     resolution: {integrity: sha512-nk7dKrcW8hfCZ4H6klWcdRknBOXWzNQByJ0oJyX97BOupsYD+FzLS4hflgEu/uPUEHZCuRfMxzCBsuWd7OzT8Q==}
@@ -6021,6 +6028,8 @@ snapshots:
       nanoid: 3.3.7
       picocolors: 1.0.0
       source-map-js: 1.2.0
+
+  postgres@3.4.4: {}
 
   preferred-pm@3.1.2:
     dependencies:

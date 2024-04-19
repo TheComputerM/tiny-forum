@@ -4,16 +4,20 @@ import * as Card from "~/components/ui/card";
 import { Heading } from "./ui/heading";
 import { Badge } from "./ui/badge";
 import { Text } from "./ui/text";
-import { Button } from "./ui/button";
 import { TbEye } from "solid-icons/tb";
+import { button } from "styled-system/recipes";
 
-export const PostCard: Component = () => {
+export const PostCard: Component<{
+  id: number;
+  title: string;
+  content: string;
+}> = (props) => {
   return (
     <Card.Root>
       <Card.Header>
         <Stack>
           <Heading textStyle="4xl" as="h3">
-            Title
+            {props.title}
           </Heading>
           <HStack>
             <Badge>badge</Badge>
@@ -21,22 +25,16 @@ export const PostCard: Component = () => {
         </Stack>
       </Card.Header>
       <Card.Body>
-        <Text>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit in
-          blanditiis iusto consequatur repudiandae, fuga molestiae ipsam qui
-          animi eum similique mollitia repellat delectus maiores illum,
-          voluptatibus laborum! Nostrum necessitatibus distinctio dolorem quas
-          officia hic consequuntur dolorum quos quis dolores?
-        </Text>
+        <Text>{props.content}</Text>
       </Card.Body>
       <Card.Footer justifyContent="space-between" alignItems="center">
         <Text textStyle="lg">
           by <b>Username</b>
         </Text>
-        <Button>
+        <a href={`/post/${props.id}`} class={button()}>
           <TbEye />
           View Post
-        </Button>
+        </a>
       </Card.Footer>
     </Card.Root>
   );

@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS "post" (
 	"user_id" integer NOT NULL,
 	"title" varchar(255) NOT NULL,
 	"content" text NOT NULL,
-  "duplicate_id" integer,
+  "duplicate_id" integer DEFAULT NULL,
 	"created_at" timestamp DEFAULT now(),
   FOREIGN KEY ("user_id") REFERENCES "users"("id"),
   FOREIGN KEY ("duplicate_id") REFERENCES "post"("id")
