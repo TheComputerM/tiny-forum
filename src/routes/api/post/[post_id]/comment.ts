@@ -17,8 +17,11 @@ export async function GET(event: APIEvent) {
    * }, ...]
    * ```
    */
+  // const user_id = await sql`select user_id from post where id = ${postId}`;
+  // const sentiment = await sql`select score from sentiment where user_id = ${user_id}`;
   const comments = await sql`select * from comment where post_id = ${postId}`;
-  return comments;
+  const comment = await sql`select comment.id ,SUM(sentiment.score) as score,comment.user_id from comment left join sentiment on comment.id = sentiment.comment_id where comment.post_id = ${postId} group by comment.id`
+  return comment;
 }
 
 export async function POST(event: APIEvent) {
