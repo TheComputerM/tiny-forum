@@ -1,6 +1,5 @@
-import { Link } from "@solidjs/meta";
 import { createAsync } from "@solidjs/router";
-import { Show } from "solid-js";
+import { Show, createResource } from "solid-js";
 import { Container, Divider, HStack, Stack } from "styled-system/jsx";
 import { Comment } from "~/components/Comment";
 import { CommentInput } from "~/components/CommentInput";
@@ -18,6 +17,15 @@ const getPost = async () => {
 export const route = {
   load: () => getPost(),
 };
+
+function CommentSection() {
+  const [comments] = createResource(async () => {
+    const response = await fetch(`${API_URL}/post/1/comment`);
+    const data = await response.json();
+    return data;
+  });
+  return JSON.stringify(comments());
+}
 
 export default function PostPage() {
   const post = createAsync(() => getPost());
@@ -40,9 +48,7 @@ export default function PostPage() {
         <Divider my="6" />
         <CommentInput />
         <br />
-        <Stack>
-          <Comment />
-        </Stack>
+        <CommentSection />
       </Container>
     </Show>
   );

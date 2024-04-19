@@ -36,7 +36,7 @@ const CommentVoting = () => {
   );
 };
 
-export const Comment: Component = () => {
+export const Comment: Component<{}> = (props) => {
   const [open, setOpen] = createSignal(false);
 
   return (
