@@ -5,13 +5,16 @@ export async function GET(event: APIEvent) {
   const postId = event.params.post_id as string;
 
   /**
-   * todo(saitej): get number of likes and dislikes in each comment using the sentiment table
+   * todo(saitej): get number of likes and dislikes in each comment using the sentiment table, also the user who has posted them
    * ```json
    * [{
    *    id: <<comment_id>>,
-   *    likes: <<number>>
-   *    dislikes: <<number>>
-   * }]
+   *    likes: <<number>>,
+   *    dislikes: <<number>>,
+   *    user: {
+   *      id: <<user_id>>
+   *    }
+   * }, ...]
    * ```
    */
   const comments = await sql`select * from comment where post_id = ${postId}`;
