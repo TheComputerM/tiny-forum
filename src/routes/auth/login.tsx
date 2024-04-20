@@ -11,7 +11,7 @@ export default function SignInPage() {
     <Center mt="6">
       <Card.Root width="md">
         <Card.Header>
-          <Card.Title>Sign In</Card.Title>
+          <Card.Title>Login</Card.Title>
           <Card.Description>
             Don't have an account?
             <Link href="/auth/signup" ml="1">
@@ -19,17 +19,21 @@ export default function SignInPage() {
             </Link>
           </Card.Description>
         </Card.Header>
-        <styled.form display="contents">
+        <styled.form display="contents" action="/api/auth/login" method="post">
           <Card.Body>
             <Stack gap="1">
               <FormLabel>EMail</FormLabel>
-              <Input type="email" placeholder="fyyyyxxxx@p.bits-pilani.ac.in" />
+              <Input
+                type="email"
+                placeholder="fyyyyxxxx@p.bits-pilani.ac.in"
+                name="email"
+              />
             </Stack>
           </Card.Body>
           <Card.Footer>
-            <Button>
+            <Button type="submit">
               <TbLogin />
-              Sign In
+              Login
             </Button>
           </Card.Footer>
         </styled.form>

@@ -1,5 +1,6 @@
 import { APIEvent } from "@solidjs/start/server";
 import sql from "~/lib/db";
+import { getSession } from "~/lib/session";
 
 export async function GET(event: APIEvent) {
   const postId = event.params.post_id as string;
@@ -23,5 +24,7 @@ export async function GET(event: APIEvent) {
 
 export async function POST(event: APIEvent) {
   const postId = event.params.post_id as string;
+  const session = await getSession();
+  console.log(session);
   
 }
