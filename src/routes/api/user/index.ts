@@ -9,13 +9,20 @@ export async function GET(event: APIEvent) {
    * {
    *    id: <<user_id>>,
    *    ...,
-   *    tags: [{
-   *      name: <<tag_name>>,
-   *    }]
+   *    tags: [tag_name, ...]
    * }
    * ```
    */
-  const user = await sql`select * from users`;
+  const user = await sql`select 
+  users.*,
+  string_agg(tag.name, ', ') as tag_names from users
+  left join 
+  user_tags ON users.id = user_tags.user_id
+  left join 
+  tag ON user_tags.tag_id = tag.id
+  group by
+  users.id;
+`;
 
   return user;
 }
