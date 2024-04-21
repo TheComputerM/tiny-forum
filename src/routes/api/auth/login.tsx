@@ -10,7 +10,7 @@ export async function POST(event: APIEvent) {
   const user = await sql`select * from users where email = ${email}`;
 
   const session = await getSession();
-  await session.update((s) => s.user = user[0])
+  await session.update((s) => s = user[0])
   
   return redirect("/");
 }

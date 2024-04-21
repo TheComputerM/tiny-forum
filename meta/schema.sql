@@ -65,14 +65,14 @@ CREATE TABLE IF NOT EXISTS "sentiment" (
 
 INSERT INTO users (name, email, is_moderator) VALUES ('Admin', 'admin@tiny-forum.com', true);
 
-INSERT INTO tag (name, description) VALUES ('newbie', 'A newly joined member');
+INSERT INTO tag (id, name, description) VALUES (1, 'newbie', 'A newly joined member');
 
 CREATE FUNCTION assign_newbie_tag()
 RETURNS TRIGGER AS $$
 BEGIN
-    IF NEW.role != 'moderator' THEN
+    IF NEW.is_moderator = false THEN
         INSERT INTO user_tags (user_id, tag_id)
-        VALUES (NEW.id, (SELECT tag_id from tags WHERE tag_name = 'newbie'));
+        VALUES (NEW.id, 1);
     END IF;
 END;
 $$ LANGUAGE plpgsql;

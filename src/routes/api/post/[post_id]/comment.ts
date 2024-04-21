@@ -30,8 +30,6 @@ export async function POST(event: APIEvent) {
   const parentCommentId = searchParams.get("parent")
     ? parseInt(searchParams.get("parent") as string)
     : null;
-  console.log(event.request.url);
-  console.log(searchParams.get("parent"));
   const formdata = await event.request.formData();
   const content = formdata.get("content")!.toString();
 

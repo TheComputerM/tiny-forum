@@ -3,8 +3,10 @@ import { Heading } from "./ui/heading";
 import { Button } from "./ui/button";
 import { TbUserCog } from "solid-icons/tb";
 import { button } from "styled-system/recipes";
-import { removeSession } from "~/lib/session";
-import { action, redirect, useAction } from "@solidjs/router";
+import { getSession, removeSession } from "~/lib/session";
+import { action, createAsync, redirect, useAction } from "@solidjs/router";
+import { Show, createResource } from "solid-js";
+import { NoHydration } from "solid-js/web";
 
 const logoutAction = action(async () => {
   "use server";
@@ -14,13 +16,20 @@ const logoutAction = action(async () => {
 
 function UserPanel() {
   const logout = useAction(logoutAction);
+  const [user] = createResource(async () => {
+    "use server";
+    const session = await getSession();
+    return session.data;
+  });
 
   return (
     <HStack alignItems="center" gap="3">
-      <a class={button()} href="/admin">
-        <TbUserCog />
-        Admin
-      </a>
+      <Show when={user()?.is_moderator}>
+        <a class={button()} href="/admin">
+          <TbUserCog />
+          Admin
+        </a>
+      </Show>
       <Button variant="ghost" onClick={logout}>
         Logout
       </Button>
@@ -36,7 +45,9 @@ export function Navbar() {
           <a href="/">
             <Heading textStyle="2xl">Tiny Forum</Heading>
           </a>
-          <UserPanel />
+          <NoHydration>
+            <UserPanel />
+          </NoHydration>
         </HStack>
       </Container>
     </Divider>

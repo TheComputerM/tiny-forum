@@ -1,5 +1,5 @@
 import { TbUserPlus } from "solid-icons/tb";
-import { Center, Stack } from "styled-system/jsx";
+import { Center, Stack, styled } from "styled-system/jsx";
 import { Button } from "~/components/ui/button";
 import * as Card from "~/components/ui/card";
 import { FormLabel } from "~/components/ui/form-label";
@@ -19,24 +19,30 @@ export default function SignUpPage() {
             </Link>
           </Card.Description>
         </Card.Header>
-        <Card.Body>
-          <Stack gap="4">
-            <Stack gap="1">
-              <FormLabel>EMail</FormLabel>
-              <Input type="email" placeholder="fyyyyxxxx@p.bits-pilani.ac.in" />
+        <styled.form display="contents" method="post" action="/api/user">
+          <Card.Body>
+            <Stack gap="4">
+              <Stack gap="1">
+                <FormLabel>EMail</FormLabel>
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="fyyyyxxxx@p.bits-pilani.ac.in"
+                />
+              </Stack>
+              <Stack gap="1">
+                <FormLabel>Name</FormLabel>
+                <Input name="name" placeholder="John Doe" />
+              </Stack>
             </Stack>
-            <Stack gap="1">
-              <FormLabel>Name</FormLabel>
-              <Input type="email" placeholder="John Doe" />
-            </Stack>
-          </Stack>
-        </Card.Body>
-        <Card.Footer>
-          <Button>
-            Sign Up
-            <TbUserPlus />
-          </Button>
-        </Card.Footer>
+          </Card.Body>
+          <Card.Footer>
+            <Button type="submit">
+              Sign Up
+              <TbUserPlus />
+            </Button>
+          </Card.Footer>
+        </styled.form>
       </Card.Root>
     </Center>
   );

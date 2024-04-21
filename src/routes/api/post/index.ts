@@ -26,6 +26,11 @@ export async function POST(event: APIEvent) {
   const formdata = await event.request.formData();
   const title = formdata.get("title") as string;
   const content = formdata.get("content") as string;
+  const tags = formdata.getAll("tags");
+  console.log(tags);
+  console.log(Object.fromEntries(formdata))
+
+  return "Hello";
 
   const output = await sql`insert into post (user_id, title, content) VALUES (${userId}, ${title}, ${content}) RETURNING id`;
   

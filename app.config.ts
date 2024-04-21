@@ -6,4 +6,5 @@ export default defineConfig({
     plugins: [tsconfigPaths()],
   },
   middleware: "./src/middleware.ts",
+  ssr: false
 });
