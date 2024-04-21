@@ -33,12 +33,7 @@ export async function POST(event: APIEvent) {
     parseInt(tag)
   );
 
-  const [post] =
-    await sql`insert into post (user_id, title, content) VALUES (${userId}, ${title}, ${content}) RETURNING id`;
+  await sql`CALL create_post(${userId}, ${title}, ${content}, ${tags})`;
 
-  for await (const tag of tags) {
-    await sql`insert into post_tags (post_id, tag_id) values (${post.id}, ${tag})`;
-  }
-
-  return redirect(`/post/${post.id}`);
+  return redirect(`/`);
 }

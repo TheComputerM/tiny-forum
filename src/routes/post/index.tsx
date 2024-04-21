@@ -4,9 +4,6 @@ import { FormLabel } from "~/components/ui/form-label";
 import { Heading } from "~/components/ui/heading";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
-import { Index, Portal } from "solid-js/web";
-import * as Select from "~/components/ui/select";
-import { TbCheck } from "solid-icons/tb";
 import { For, Show, createResource } from "solid-js";
 import { API_URL } from "~/lib/constants";
 
@@ -17,49 +14,16 @@ const TagsSelector = () => {
     return data.map((tag: any) => ({ label: tag.name, value: tag.id }));
   });
 
-  return <Show when={tags()}>
-    <select name="tags" multiple>
-      <For each={tags()}>
-        {(tag) => <option value={tag.value}>{tag.label}</option>}
-      </For>
-    </select>
-  </Show>
-
   return (
     <Show when={tags()}>
-      <Select.Root
-        positioning={{ sameWidth: true }}
-        items={tags()}
-        multiple={true}
-        name="tags"
-        form="post_form"
-      >
-        <Select.Label>Tags</Select.Label>
-        <Select.Control>
-          <Select.Trigger>
-            <Select.ValueText placeholder="Select a Framework" />
-          </Select.Trigger>
-        </Select.Control>
-        <Portal>
-          <Select.Positioner>
-            <Select.Content>
-              <Index each={tags()}>
-                {(item) => (
-                  <Select.Item item={item()}>
-                    <Select.ItemText>{item().label}</Select.ItemText>
-                    <Select.ItemIndicator>
-                      <TbCheck />
-                    </Select.ItemIndicator>
-                  </Select.Item>
-                )}
-              </Index>
-            </Select.Content>
-          </Select.Positioner>
-        </Portal>
-      </Select.Root>
+      <select name="tags" multiple>
+        <For each={tags()}>
+          {(tag) => <option value={tag.value}>{tag.label}</option>}
+        </For>
+      </select>
     </Show>
   );
-};
+}
 
 export default function CreatePostPage() {
   return (
@@ -67,7 +31,12 @@ export default function CreatePostPage() {
       <Heading as="h1" textStyle="5xl">
         Create Post
       </Heading>
-      <styled.form display="contents" action="/api/post" method="post" id="post_form">
+      <styled.form
+        display="contents"
+        action="/api/post"
+        method="post"
+        id="post_form"
+      >
         <Stack mt="6" gap="4">
           <Stack gap="1">
             <FormLabel>Title</FormLabel>

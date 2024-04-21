@@ -9,18 +9,17 @@ export async function GET(event: APIEvent) {
    * {
    *    id: <<post_id>>,
    *    ...,
-   *    user: {
-   *      name: <<username>>
-   *    }
    * }
    * ```
    */
   const post = await sql`select 
-  post.*, users.name as user 
+  post.*, users.name as user, ARRAY_AGG(tag.name) AS tags
   from post 
   INNER JOIN users ON users.id = post.user_id
-  
-  where post.id = ${postId}`;
+  LEFT JOIN post_tags on post_tags.post_id = post.id
+  LEFT JOIN tag on tag.id = post_tags.tag_id
+  where post.id = ${postId}
+  GROUP BY post.id, users.id`;
 
   return post[0];
 }

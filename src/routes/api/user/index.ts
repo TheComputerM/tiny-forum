@@ -15,7 +15,7 @@ export async function GET(event: APIEvent) {
    */
   const user = await sql`select 
   users.*,
-  string_agg(tag.name, ', ') as tag_names from users
+  ARRAY_AGG(tag.name) as tag_names from users
   left join 
   user_tags ON users.id = user_tags.user_id
   left join 
