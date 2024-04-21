@@ -184,7 +184,7 @@ function UsersTable() {
                 </Table.Cell>
                 <Table.Cell>
                   <HStack justify="end">
-                    <Show when={user.is_moderator}>
+                    <Show when={!user.is_moderator}>
                       <Button size="xs">Make Moderator</Button>
                     </Show>
                     <IconButton size="xs">

@@ -4,18 +4,6 @@ import sql from "~/lib/db";
 import { getSession } from "~/lib/session";
 
 export async function GET() {
-  /**
-   * TODO(eshaan): also get the user's name in the posts
-   * ```json
-   * [{
-   *    id: <<post_id>>,
-   *    ...,
-   *    user: {
-   *      name: <<username>>
-   *    }
-   * }]
-   * ```
-   */
   const posts = await sql`select 
   post.*, users.name as user 
   from post 
