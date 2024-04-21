@@ -3,15 +3,25 @@ import { Heading } from "./ui/heading";
 import { Button } from "./ui/button";
 import { TbUserCog } from "solid-icons/tb";
 import { button } from "styled-system/recipes";
+import { removeSession } from "~/lib/session";
+import { action, redirect, useAction } from "@solidjs/router";
+
+const logoutAction = action(async () => {
+  "use server";
+  await removeSession();
+  throw redirect("/auth/login");
+});
 
 function UserPanel() {
+  const logout = useAction(logoutAction);
+
   return (
     <HStack alignItems="center" gap="3">
       <a class={button()} href="/admin">
         <TbUserCog />
         Admin
       </a>
-      <Button variant="ghost">
+      <Button variant="ghost" onClick={logout}>
         Logout
       </Button>
     </HStack>

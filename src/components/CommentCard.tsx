@@ -16,7 +16,7 @@ import {
 import { CommentInput } from "./CommentInput";
 import { IconButton } from "./ui/icon-button";
 
-const CommentVoting = () => {
+const CommentVotes = () => {
   const [vote, setVote] = createSignal(0);
   const totalVotes = 0;
   return (
@@ -36,11 +36,11 @@ const CommentVoting = () => {
   );
 };
 
-export const Comment: Component<{}> = (props) => {
+export const CommentCard: Component<any> = (props) => {
   const [open, setOpen] = createSignal(false);
 
   return (
-    <Card.Root px="4" py="4">
+    <Card.Root px="4" py="2">
       <Stack gap="1.5">
         <Heading as="h6" textStyle="lg">
           Username
@@ -48,23 +48,23 @@ export const Comment: Component<{}> = (props) => {
         <HStack>
           <Badge>badge</Badge>
         </HStack>
-        <Text>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Provident
-          corrupti cum facilis deleniti libero sint reiciendis accusamus id
-          culpa ad.
-        </Text>
+        <Text>{props.comment.content}</Text>
 
         <HStack justify="space-between" alignItems="center">
-          <CommentVoting />
-          <Button size="sm" onClick={() => setOpen((x) => !x)}>
+          <CommentVotes />
+          <Button
+            size="xs"
+            variant="outline"
+            onClick={() => setOpen((x) => !x)}
+          >
             <TbArrowBackUp />
             Reply
           </Button>
         </HStack>
       </Stack>
       <Collapsible.Root open={open()}>
-        <Collapsible.Content mt="3">
-          <CommentInput />
+        <Collapsible.Content py="1" mt="2" px="1">
+          <CommentInput parent={props.comment.id} />
         </Collapsible.Content>
       </Collapsible.Root>
     </Card.Root>

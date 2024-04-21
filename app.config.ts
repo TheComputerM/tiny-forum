@@ -5,4 +5,5 @@ export default defineConfig({
   vite: {
     plugins: [tsconfigPaths()],
   },
+  middleware: "./src/middleware.ts",
 });

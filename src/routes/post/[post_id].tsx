@@ -1,34 +1,76 @@
-import { createAsync } from "@solidjs/router";
-import { Show, createResource } from "solid-js";
+import { createAsync, useParams } from "@solidjs/router";
+import { For, Show, createResource } from "solid-js";
 import { Container, Divider, HStack, Stack } from "styled-system/jsx";
-import { Comment } from "~/components/Comment";
+import { CommentCard } from "~/components/CommentCard";
 import { CommentInput } from "~/components/CommentInput";
 import { Badge } from "~/components/ui/badge";
 import { Heading } from "~/components/ui/heading";
 import { Text } from "~/components/ui/text";
 import { API_URL } from "~/lib/constants";
+import { formatDate } from "~/lib/utils";
 
-const getPost = async () => {
-  const response = await fetch(`${API_URL}/post/1`);
-  const data = await response.json();
-  return data;
-};
+function arrayToTree(comments: any[]) {
+  const map = new Map();
+  const tree: any[] = [];
 
-export const route = {
-  load: () => getPost(),
-};
+  for (const comment of comments) {
+    map.set(comment.id, { ...comment, children: [] });
+  }
+
+  for (const comment of comments) {
+    if (comment.parent_id !== null) {
+      map.get(comment.parent_id).children.push(map.get(comment.id));
+    } else {
+      tree.push(map.get(comment.id));
+    }
+  }
+
+  return tree;
+}
+
+function CommentTree(props: any) {
+  return (
+    <For each={props.comments}>
+      {(comment) => (
+        <>
+          <CommentCard comment={comment} />
+          <Show when={comment.children.length}>
+            <Stack ml="8">
+              <CommentTree comments={comment.children} />
+            </Stack>
+          </Show>
+        </>
+      )}
+    </For>
+  );
+}
 
 function CommentSection() {
+  const { post_id } = useParams();
+
   const [comments] = createResource(async () => {
-    const response = await fetch(`${API_URL}/post/1/comment`);
+    const response = await fetch(`${API_URL}/post/${post_id}/comment`);
     const data = await response.json();
-    return data;
+    return arrayToTree(data);
   });
-  return JSON.stringify(comments());
+
+  return (
+    <Stack>
+      <CommentInput />
+      <Show when={comments()}>
+        <CommentTree comments={comments()} />
+      </Show>
+    </Stack>
+  );
 }
 
 export default function PostPage() {
-  const post = createAsync(() => getPost());
+  const { post_id } = useParams();
+  const post = createAsync(async () => {
+    const response = await fetch(`${API_URL}/post/${post_id}`);
+    const data = await response.json();
+    return data;
+  });
 
   return (
     <Show when={post()}>
@@ -43,11 +85,12 @@ export default function PostPage() {
             </HStack>
           </Stack>
           <Text>{post().content}</Text>
-          <Text color="fg.subtle">Posted on {post().created_at}</Text>
+          <Text color="fg.subtle" textStyle="sm">
+            Posted on {formatDate(post().created_at)}
+          </Text>
         </Stack>
         <Divider my="6" />
-        <CommentInput />
-        <br />
+
         <CommentSection />
       </Container>
     </Show>

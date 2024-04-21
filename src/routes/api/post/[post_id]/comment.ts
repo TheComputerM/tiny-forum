@@ -1,3 +1,4 @@
+import { reload } from "@solidjs/router";
 import { APIEvent } from "@solidjs/start/server";
 import sql from "~/lib/db";
 import { getSession } from "~/lib/session";
@@ -10,8 +11,7 @@ export async function GET(event: APIEvent) {
    * ```json
    * [{
    *    id: <<comment_id>>,
-   *    likes: <<number>>,
-   *    dislikes: <<number>>,
+   *    score: <<sum of likes and dislikes>>,
    *    user: {
    *      id: <<user_id>>
    *    }
@@ -25,6 +25,17 @@ export async function GET(event: APIEvent) {
 export async function POST(event: APIEvent) {
   const postId = event.params.post_id as string;
   const session = await getSession();
-  console.log(session);
+  const userId = session.data.id;
+  const { searchParams } = new URL(event.request.url);
+  const parentCommentId = searchParams.get("parent")
+    ? parseInt(searchParams.get("parent") as string)
+    : null;
+  console.log(event.request.url);
+  console.log(searchParams.get("parent"));
+  const formdata = await event.request.formData();
+  const content = formdata.get("content")!.toString();
+
+  await sql`insert into comment (user_id, post_id, parent_id, content) values (${userId}, ${postId}, ${parentCommentId}, ${content})`;
   
+  return reload();
 }

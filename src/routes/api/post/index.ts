@@ -22,10 +22,7 @@ export async function GET() {
 
 export async function POST(event: APIEvent) {
   const session = await getSession();
-  console.log(session.data);
-  return redirect('/');
-  
-  const userId = 1;
+  const userId = session.data.id;
   const formdata = await event.request.formData();
   const title = formdata.get("title") as string;
   const content = formdata.get("content") as string;
