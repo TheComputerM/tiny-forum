@@ -24,7 +24,7 @@ const TagsSelector = () => {
         items={tags()}
         multiple={true}
         name="tags"
-        form="a"
+        form="post_form"
       >
         <Select.Label>Tags</Select.Label>
         <Select.Control>
@@ -59,7 +59,7 @@ export default function CreatePostPage() {
       <Heading as="h1" textStyle="5xl">
         Create Post
       </Heading>
-      <styled.form display="contents" action="/api/post" method="post">
+      <styled.form display="contents" action="/api/post" method="post" id="post_form">
         <Stack mt="6" gap="4">
           <Stack gap="1">
             <FormLabel>Title</FormLabel>
