@@ -48,6 +48,65 @@ function NewTagModal() {
   );
 }
 
+function AddUserTagModal({ userId }: { userId: number }) {
+  const [tags] = createResource(async () => {
+    const response = await fetch(`${API_URL}/tag`);
+    const data = await response.json();
+    return data;
+  });
+
+  return (
+    <Show when={tags()}>
+      <Dialog.Root lazyMount>
+        <Dialog.Trigger asChild>
+          <IconButton size="xs">
+            <TbPlus />
+          </IconButton>
+        </Dialog.Trigger>
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          <Dialog.Content>
+            <Stack gap="8" p="6">
+              <Stack gap="1">
+                <Dialog.Title>Add Tag</Dialog.Title>
+              </Stack>
+              <styled.form
+                display="contents"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  // @ts-ignore
+                  const formdata = new FormData(e.target);
+                  await fetch(`${API_URL}/user/${userId}`, {
+                    method: "PATCH",
+                    body: formdata,
+                  });
+                  window.location.reload();
+                }}
+              >
+                <select name="tag">
+                  <For each={tags()}>
+                    {(tag) => <option value={tag.id}>{tag.name}</option>}
+                  </For>
+                </select>
+                <Stack gap="3" direction="row" width="full">
+                  <Button width="full" type="submit">
+                    Confirm
+                  </Button>
+                </Stack>
+              </styled.form>
+            </Stack>
+            <Dialog.CloseTrigger asChild position="absolute" top="2" right="2">
+              <IconButton aria-label="Close Dialog" variant="ghost" size="sm">
+                <TbX />
+              </IconButton>
+            </Dialog.CloseTrigger>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Dialog.Root>
+    </Show>
+  );
+}
+
 function TagsTable() {
   const [tags, { refetch }] = createResource(async () => {
     const response = await fetch(`${API_URL}/tag`);
@@ -112,14 +171,16 @@ function UsersTable() {
         </Table.Head>
         <Table.Body>
           <For each={users()}>
-            {(tag) => (
+            {(user) => (
               <Table.Row>
-                <Table.Cell>{tag.name}</Table.Cell>
-                <Table.Cell>{tag.email}</Table.Cell>
-                <Table.Cell>{tag.is_moderator}</Table.Cell>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>{user.email}</Table.Cell>
+                <Table.Cell>
+                  <AddUserTagModal userId={user.id} />
+                </Table.Cell>
                 <Table.Cell>
                   <HStack justify="end">
-                    <Show when={tag.is_moderator}>
+                    <Show when={user.is_moderator}>
                       <Button size="xs">Make Moderator</Button>
                     </Show>
                     <IconButton size="xs">

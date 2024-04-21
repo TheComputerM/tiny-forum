@@ -15,7 +15,12 @@ export async function GET(event: APIEvent) {
    * }
    * ```
    */
-  const post = await sql`select * from post where id = ${postId}`;
+  const post = await sql`select 
+  post.*, users.name as user 
+  from post 
+  INNER JOIN users ON users.id = post.user_id
+  
+  where post.id = ${postId}`;
 
   return post[0];
 }

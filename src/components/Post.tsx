@@ -8,12 +8,7 @@ import { TbEye } from "solid-icons/tb";
 import { button } from "styled-system/recipes";
 import { formatDate } from "~/lib/utils";
 
-export const PostCard: Component<{
-  id: number;
-  title: string;
-  content: string;
-  created_at: string;
-}> = (props) => {
+export const PostCard: Component<any> = (props) => {
   return (
     <Card.Root>
       <Card.Header>
@@ -21,9 +16,6 @@ export const PostCard: Component<{
           <Heading textStyle="4xl" as="h3">
             {props.title}
           </Heading>
-          <HStack>
-            <Badge>badge</Badge>
-          </HStack>
         </Stack>
       </Card.Header>
       <Card.Body>
@@ -31,7 +23,7 @@ export const PostCard: Component<{
       </Card.Body>
       <Card.Footer justifyContent="space-between" alignItems="center">
         <Text textStyle="lg">
-          by <b>Username</b>{" "}
+          by <b>{props.user}</b>{" "}
           <Text color="fg.subtle" as="span" textStyle="sm">
             on {formatDate(props.created_at)}
           </Text>

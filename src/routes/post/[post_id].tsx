@@ -81,13 +81,14 @@ export default function PostPage() {
               {post().title}
             </Heading>
             <HStack>
-              <Badge>badge</Badge>
+              <Badge>newbie</Badge>
             </HStack>
           </Stack>
           <Text>{post().content}</Text>
           <Text color="fg.subtle" textStyle="sm">
-            Posted on {formatDate(post().created_at)}
+            Posted on {formatDate(post().created_at)} by {post().user}
           </Text>
+          
         </Stack>
         <Divider my="6" />
 

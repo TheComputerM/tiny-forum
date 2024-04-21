@@ -139,3 +139,20 @@ AFTER INSERT ON comment
 FOR EACH ROW
 EXECUTE FUNCTION self_like();
 
+CREATE OR REPLACE PROCEDURE create_post(
+	user_id INTEGER,
+	title varchar(255),
+	content text,
+	tags integer[]
+) 
+AS $$
+DECLARE
+    i INTEGER;
+		post_id INTEGER;
+BEGIN
+	insert into post (user_id, title, content) VALUES (user_id, title, content) RETURNING id INTO post_id;
+	FOR i IN array_lower(tags, 1) .. array_upper(tags, 1) LOOP
+		insert into post_tags (post_id, tag_id) VALUES (post_id, tags[i]);
+	END LOOP;
+END;
+$$ LANGUAGE plpgsql;

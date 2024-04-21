@@ -7,7 +7,7 @@ import { Textarea } from "~/components/ui/textarea";
 import { Index, Portal } from "solid-js/web";
 import * as Select from "~/components/ui/select";
 import { TbCheck } from "solid-icons/tb";
-import { Show, createResource } from "solid-js";
+import { For, Show, createResource } from "solid-js";
 import { API_URL } from "~/lib/constants";
 
 const TagsSelector = () => {
@@ -16,6 +16,14 @@ const TagsSelector = () => {
     const data = await response.json();
     return data.map((tag: any) => ({ label: tag.name, value: tag.id }));
   });
+
+  return <Show when={tags()}>
+    <select name="tags" multiple>
+      <For each={tags()}>
+        {(tag) => <option value={tag.value}>{tag.label}</option>}
+      </For>
+    </select>
+  </Show>
 
   return (
     <Show when={tags()}>
