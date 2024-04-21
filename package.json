@@ -1,0 +1,31 @@
+{
+  "name": "example-basic",
+  "type": "module",
+  "scripts": {
+    "prepare": "panda codegen",
+    "dev": "vinxi dev",
+    "build": "vinxi build",
+    "start": "vinxi start",
+    "version": "vinxi version"
+  },
+  "dependencies": {
+    "@ark-ui/solid": "^2.2.0",
+    "@fontsource-variable/plus-jakarta-sans": "^5.0.21",
+    "@solidjs/meta": "^0.29.3",
+    "@solidjs/router": "^0.13.2",
+    "@solidjs/start": "1.0.0-rc.0",
+    "postgres": "^3.4.4",
+    "solid-icons": "^1.1.0",
+    "solid-js": "^1.8.16",
+    "vinxi": "^0.3.11"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@pandacss/dev": "^0.37.2",
+    "@park-ui/panda-preset": "^0.37.0",
+    "vite": "^5.2.10",
+    "vite-tsconfig-paths": "^4.3.2"
+  }
+}

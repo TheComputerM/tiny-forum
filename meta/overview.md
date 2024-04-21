@@ -121,10 +121,17 @@ The mini-world of this project contains and represents the actions needed for a 
 
 
 
+## Triggers
+
+- New post by the user when he signs up
+- User will automatically like his/her own comment
+- User will get a newbie tag when they create their account
 
 
+## Procedure
 
-
+- Delete every post that has a particular tag
+- Delete every user that has a particular tag
 
  
 

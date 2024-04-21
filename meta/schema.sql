@@ -3,7 +3,7 @@
 CREATE TABLE IF NOT EXISTS "users" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" varchar(255) NOT NULL,
-	"email" varchar(100) NOT NULL,
+	"email" varchar(100) NOT NULL UNIQUE,
 	"is_moderator" boolean DEFAULT false,
 	"created_at" timestamp DEFAULT now()
 );
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS "post" (
 	"user_id" integer NOT NULL,
 	"title" varchar(255) NOT NULL,
 	"content" text NOT NULL,
-  "duplicate_id" integer,
+  "duplicate_id" integer DEFAULT NULL,
 	"created_at" timestamp DEFAULT now(),
   FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE,
   FOREIGN KEY ("duplicate_id") REFERENCES "post"("id")
@@ -63,6 +63,11 @@ CREATE TABLE IF NOT EXISTS "sentiment" (
   FOREIGN KEY ("comment_id") REFERENCES "comment"("id") ON DELETE CASCADE
 );
 
+
+INSERT INTO users (name, email, is_moderator) VALUES ('Admin', 'admin@tiny-forum.com', true);
+
+INSERT INTO tag (id, name, description) VALUES (1, 'newbie', 'A newly joined member');
+
 CREATE OR REPLACE PROCEDURE delete_by_tag(tag IN SERIAL) IS
 -- This procedure deletes all posts and users with a certain tag
 BEGIN
@@ -86,17 +91,48 @@ BEGIN
 	);
 END;
 
+CREATE FUNCTION assign_newbie_tag()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.is_moderator = false THEN
+        INSERT INTO user_tags (user_id, tag_id)
+        VALUES (NEW.id, 1);
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER newbie_tag_trigger
+AFTER INSERT ON users
+FOR EACH ROW
+EXECUTE FUNCTION assign_newbie_tag();
+
 CREATE FUNCTION welcome_post()
-RETURN TRIGGER AS $$
+RETURNS TRIGGER AS $$
 BEGIN
 	INSERT INTO post (user_id,title,content)
-	VALUES(NEW.id,'Welcome User','Welcome to our platform, '||NEW.name||'!');
+	VALUES (NEW.id,'Welcome User','Welcome to our platform, '||NEW.name||'!');
 
 	RETURN NEW;
 END;
-$$ LANGUAGE plpgsql
+$$ LANGUAGE plpgsql;
 
 CREATE TRIGGER welcome_post_trigger
 AFTER INSERT ON users
 FOR EACH ROW
 EXECUTE FUNCTION welcome_post();
+
+CREATE FUNCTION self_like()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO sentiment (user_id,comment_id,score)
+    VALUES (NEW.user_id,NEW.id,1);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER self_like_trigger
+AFTER INSERT ON comment
+FOR EACH ROW
+EXECUTE FUNCTION self_like();
+
