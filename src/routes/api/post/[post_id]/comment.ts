@@ -11,14 +11,11 @@ export async function GET(event: APIEvent) {
    * ```json
    * [{
    *    id: <<comment_id>>,
-   *    score: <<sum of likes and dislikes>>,
-   *    user: {
-   *      name: <<name>>
-   *    }
+   *    user: id,
    * }, ...]
    * ```
    */
-  const comments = await sql`select * from comment where post_id = ${postId}`;
+  const comments = await sql`select comment.*, users.id as user from comment inner join users on users.id = comment.user_id where comment.post_id = ${postId}`;
   return comments;
 }
 
