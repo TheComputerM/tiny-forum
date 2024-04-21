@@ -14,7 +14,7 @@ export default function SignUpPage() {
           <Card.Title>Sign Up</Card.Title>
           <Card.Description>
             Already have an account?
-            <Link href="/auth/signin" ml="1">
+            <Link href="/auth/login" ml="1">
               Login
             </Link>
           </Card.Description>

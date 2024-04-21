@@ -66,9 +66,9 @@ CREATE TABLE IF NOT EXISTS "sentiment" (
 
 INSERT INTO users (name, email, is_moderator) VALUES ('Admin', 'admin@tiny-forum.com', true);
 
-INSERT INTO tag (id, name, description) VALUES (1, 'newbie', 'A newly joined member');
+INSERT INTO tag (name, description) VALUES ('newbie', 'A newly joined member');
 
-CREATE OR REPLACE PROCEDURE delete_by_tag(tag IN SERIAL) IS
+CREATE OR REPLACE PROCEDURE delete_by_tag(tag IN INTEGER) AS $$
 -- This procedure deletes all posts and users with a certain tag
 BEGIN
 	DELETE FROM users WHERE id IN (
@@ -79,8 +79,9 @@ BEGIN
 	);
 	DELETE FROM tag WHERE id=tag;
 END;
+$$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE PROCEDURE get_recent_posts() IS
+CREATE OR REPLACE PROCEDURE get_recent_posts() AS $$
 -- This procedure returns a cursor to a view containing recent posts
 DECLARE
 	current_timestamp TIMESTAMP;
@@ -90,6 +91,7 @@ BEGIN
 		SELECT post_id FROM comment WHERE created_at >= current_timestamp - INTERVAL '24' HOUR
 	);
 END;
+$$ LANGUAGE plpgsql;
 
 CREATE FUNCTION assign_newbie_tag()
 RETURNS TRIGGER AS $$
@@ -98,6 +100,7 @@ BEGIN
         INSERT INTO user_tags (user_id, tag_id)
         VALUES (NEW.id, 1);
     END IF;
+		RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 

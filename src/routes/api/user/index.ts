@@ -1,6 +1,6 @@
 import { APIEvent } from "@solidjs/start/server";
 import sql from "~/lib/db";
-import { POST as login } from "../auth/login";
+import { redirect } from "@solidjs/router";
 
 export async function GET(event: APIEvent) {
   /**
@@ -26,5 +26,5 @@ export async function POST(event: APIEvent) {
   const email = formdata.get("email") as string;
   await sql`insert into users (name, email) values (${name}, ${email})`;
 
-  return login(event);
+  return redirect("/auth/login");
 }

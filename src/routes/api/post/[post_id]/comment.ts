@@ -13,7 +13,7 @@ export async function GET(event: APIEvent) {
    *    id: <<comment_id>>,
    *    score: <<sum of likes and dislikes>>,
    *    user: {
-   *      id: <<user_id>>
+   *      name: <<name>>
    *    }
    * }, ...]
    * ```
