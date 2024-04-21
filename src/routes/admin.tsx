@@ -8,6 +8,7 @@ import * as Table from "~/components/ui/table";
 import { API_URL } from "~/lib/constants";
 import * as Dialog from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
+import { Badge } from "~/components/ui/badge";
 
 function NewTagModal() {
   return (
@@ -176,6 +177,9 @@ function UsersTable() {
                 <Table.Cell>{user.name}</Table.Cell>
                 <Table.Cell>{user.email}</Table.Cell>
                 <Table.Cell>
+                  <For each={user.tags}>
+                    {(tag: any) => <Badge>{tag}</Badge>}
+                  </For>
                   <AddUserTagModal userId={user.id} />
                 </Table.Cell>
                 <Table.Cell>

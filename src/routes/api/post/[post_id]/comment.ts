@@ -5,16 +5,6 @@ import { getSession } from "~/lib/session";
 
 export async function GET(event: APIEvent) {
   const postId = event.params.post_id as string;
-
-  /**
-   * todo(saitej): get number of likes and dislikes in each comment using the sentiment table, also the user who has posted them
-   * ```json
-   * [{
-   *    id: <<comment_id>>,
-   *    user: id,
-   * }, ...]
-   * ```
-   */
   const comments = await sql`select comment.*, users.id as user from comment inner join users on users.id = comment.user_id where comment.post_id = ${postId}`;
   return comments;
 }

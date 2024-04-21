@@ -24,7 +24,7 @@ export const CommentInput: Component<{ parent?: number }> = (props) => {
             // @ts-ignore
             body: new FormData(event.target),
           });
-          reload();
+          window.location.reload();
         }}
       >
         <Input name="content" placeholder="Comment..." required />

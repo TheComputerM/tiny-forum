@@ -13,16 +13,14 @@ export async function GET(event: APIEvent) {
    * }
    * ```
    */
-  const user = await sql`select 
-  users.*,
-  ARRAY_AGG(tag.name) as tag_names from users
-  left join 
-  user_tags ON users.id = user_tags.user_id
-  left join 
-  tag ON user_tags.tag_id = tag.id
-  group by
-  users.id;
-`;
+//   const user = await sql`
+//   select  users.*, ARRAY_AGG(tag.name) as tags 
+//   from users
+//   left join user_tags ON users.id = user_tags.user_id
+//   left join tag ON user_tags.tag_id = tag.id
+//   group by users.id;
+// `;
+const user = await sql`select * from user_tags`;
 
   return user;
 }

@@ -81,14 +81,15 @@ export default function PostPage() {
               {post().title}
             </Heading>
             <HStack>
-              <Badge>newbie</Badge>
+              <For each={post().tags}>
+                {(tag: string) => <Badge>{tag}</Badge>}
+              </For>
             </HStack>
           </Stack>
           <Text>{post().content}</Text>
           <Text color="fg.subtle" textStyle="sm">
             Posted on {formatDate(post().created_at)} by {post().user}
           </Text>
-          
         </Stack>
         <Divider my="6" />
 
